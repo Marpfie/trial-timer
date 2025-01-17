@@ -12,5 +12,9 @@ export const TimerDisplay = (props: ITimerDisplayProps) => {
     return formatDuration(elapsedTime)
   }, [elapsedTime])
 
-  return <div className="flex justify-center text-9xl m-6">{formattedTime}</div>
+  return (
+    <div className="flex justify-center items-center rounded-full text-9xl m-6 border-4 border-slate-300">
+      <span className="inline-block">{formattedTime}</span>
+    </div>
+  )
 }

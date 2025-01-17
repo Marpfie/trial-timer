@@ -1,8 +1,8 @@
 import { Lap } from "./lap"
 
 interface ILapsProps {
-  laps: string[]
   removeLap: (index: number) => void
+  laps: string[]
 }
 
 export const Laps = (props: ILapsProps) => {

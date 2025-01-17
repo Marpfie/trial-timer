@@ -11,10 +11,10 @@ import { Button } from "../../../components/button"
 
 interface ITimerControlsProps {
   addLap: () => void
-  elapsedTime: number
   resetTimer: () => void
-  timerActive: boolean
   toggleTimer: () => void
+  elapsedTime: number
+  timerActive: boolean
 }
 
 export const TimerControls = (props: ITimerControlsProps) => {

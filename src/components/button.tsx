@@ -5,10 +5,10 @@ import classnames from "classnames"
 
 interface IButtonProps extends PropsWithChildren {
   onClick?: () => void
-  text?: string
-  icon?: IconDefinition
   className?: string
   disabled?: boolean
+  icon?: IconDefinition
+  text?: string
 }
 
 export const Button = (props: IButtonProps) => {
@@ -16,7 +16,11 @@ export const Button = (props: IButtonProps) => {
 
   return (
     <button
-      className={classnames("font-bold text-xl", className)}
+      className={classnames(
+        "font-bold text-2xl hover:opacity-75 p-3 px-5 transition-all",
+        "rounded-lg border-2 border-transparent hover:border-slate-700",
+        className
+      )}
       onClick={onClick}
       disabled={disabled}
     >

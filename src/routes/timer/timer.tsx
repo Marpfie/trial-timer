@@ -35,7 +35,7 @@ export const Timer = () => {
     return () => clearInterval(interval.current)
   }, [addElapsedTime, elapsedTime, timerActive, timestamp])
 
-  // No reason to memoize these functions
+  // No reason to memoize these functions. pointless overhead for no gain
   const startTimer = () => {
     setTimestamp(dayjs().toISOString())
     setTimerActive(true)
