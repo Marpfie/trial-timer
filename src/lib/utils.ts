@@ -16,3 +16,20 @@ export const diffBetweenTimestamps = (
 
   return date1.diff(date2)
 }
+/**
+ *
+ * @param elapsedTime in milliseconds
+ * @returns Formatted string in `HH:MM:ss` / `MM:ss` format
+ */
+export const formatDuration = (elapsedTime: number) => {
+  const duration = dayjs.duration(elapsedTime)
+
+  if (duration.hours()) {
+    //TODO Check requirements for hour display
+    // This depends on the requirements. The `MM:ss` format has been defined,
+    // but not what should happen with the edge case of reaching an hour or more
+    return duration.format("HH:MM:ss")
+  }
+
+  return duration.format("MM:ss")
+}

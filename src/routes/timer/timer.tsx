@@ -1,15 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import dayjs from "dayjs"
 
-import { Button } from "../../components/button"
-import { diffBetweenTimestamps } from "../../lib/utils"
+import { diffBetweenTimestamps, formatDuration } from "../../lib/utils"
 
 import { TimerDisplay } from "./components/timerDisplay"
+import { TimerControls } from "./components/controls"
+import { Laps } from "./components/laps"
 
 export const Timer = () => {
   const [elapsedTime, setElapsedTime] = useState(0) // Elapsed time in milliseconds
   const [timestamp, setTimestamp] = useState("") // Timestamp of timer start/unpause
   const [timerActive, setTimerActive] = useState(false)
+  const [laps, setLaps] = useState<Array<string>>([])
 
   const interval = useRef<number>(undefined)
 
@@ -33,6 +35,7 @@ export const Timer = () => {
     return () => clearInterval(interval.current)
   }, [addElapsedTime, elapsedTime, timerActive, timestamp])
 
+  // No reason to memoize these functions
   const startTimer = () => {
     setTimestamp(dayjs().toISOString())
     setTimerActive(true)
@@ -48,19 +51,38 @@ export const Timer = () => {
   const resetTimer = () => {
     setTimerActive(false)
     setElapsedTime(0)
+    setLaps([])
   }
+
+  const addLap = () => {
+    // This could be slightly inaccurate as is (within 100 ms, the interval timer) depending on when the button is clicked.
+    // To fix that this step would need to update elapsed Time and set a new timestamp - I won't go into those details for demo purposes here
+    // Creates a new array so removeLap stays up to date
+    setLaps([...laps, formatDuration(elapsedTime)])
+  }
+
+  const removeLap = useCallback(
+    (index: number) => {
+      // Don't mutate the original array
+      const lapsCopy = [...laps]
+      lapsCopy.splice(index, 1)
+      setLaps(lapsCopy)
+    },
+    [laps]
+  )
 
   return (
     <>
       <h1 className="flex justify-center text-5xl m-6">Trial Timer</h1>
-      <h1>{timestamp}</h1>
-      <h1>{elapsedTime}</h1>
       <TimerDisplay elapsedTime={elapsedTime} />
-      <div className="grid grid-cols-3 gap-3">
-        <Button onClick={toggleTimer}>{timerActive ? "Stop" : "Start"}</Button>
-        <Button onClick={resetTimer}>Reset</Button>
-        <Button>Lap - Todo :)</Button>
-      </div>
+      <TimerControls
+        addLap={addLap}
+        toggleTimer={toggleTimer}
+        resetTimer={resetTimer}
+        elapsedTime={elapsedTime}
+        timerActive={timerActive}
+      />
+      <Laps laps={laps} removeLap={removeLap} />
     </>
   )
 }
